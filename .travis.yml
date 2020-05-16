@@ -8,7 +8,9 @@
 
 version: ~> 1.0
 
-os: linux
+#os: linux
+os: osx
+osx_image: xcode11.4
 language: cpp
 cache: ccache
 
@@ -28,10 +30,10 @@ before_install:
 # Perl modules needed for testing
 # Not listing Bit::Vector as slow to install, and only skips one test
   - touch temp.cpp ; g++ -E -dM -c temp.cpp | sort ; rm -rf temp.cpp
-  - yes yes | sudo cpan -fi Unix::Processors Parallel::Forker
-  - sudo apt-get install gdb gtkwave lcov
-  - sudo apt-get install libfl-dev || true
-  - sudo apt-get install libgoogle-perftools-dev
+#  - yes yes | sudo cpan -fi Unix::Processors Parallel::Forker
+#  - sudo apt-get install gdb gtkwave lcov
+#  - sudo apt-get install libfl-dev || true
+#  - sudo apt-get install libgoogle-perftools-dev
 before_script:
   - bash -x ci/build_vcddiff.sh
   - bash -x ci/build_verilator.sh
@@ -40,82 +42,12 @@ after_script:
 
 stages:
   - "Build Verilator"
-  - test
+#  - test
 
 jobs:
-#                          compiler: gcc  clang
-#     12.04 dist: precise  perl problem
-#     14.04 dist: trusty   cron
-#     16.04 dist: xenial   cron           cron
-#     18.04 dist: bionic   cron
-#     20.04 dist: focal    !cron          cron
   include:
-    - if: type != cron
+    - os: osx
+      osx_image: xcode7.2
       stage: "Build Verilator"
       name: "Build Verilator"
-      dist: focal
-      compiler: gcc
       script: echo "Done building Verilator"
-# Non-cron build will just run on whatever linux flavor we get
-    - if: type != cron
-      stage: test
-      name: "Dist test"
-      dist: focal
-      compiler: gcc
-      script: ci/test.sh dist
-    - if: type != cron
-      stage: test
-      name: "Vlt test"
-      dist: focal
-      compiler: gcc
-      script: ci/test.sh vlt
-    - if: type != cron
-      stage: test
-      name: "Vltmt set 0 test"
-      dist: focal
-      compiler: gcc
-      script: ci/test.sh vltmt0
-    - if: type != cron
-      stage: test
-      name: "Vltmt set 1 test"
-      dist: focal
-      compiler: gcc
-      script: ci/test.sh vltmt1
-# Cron builds try different OS/compiler combinations
-    - if: type = cron
-      dist: trusty
-      compiler: gcc
-      stage: "Build Verilator"
-      name: "14.04 gcc build+test"
-      script: ci/test.sh all
-    - if: type = cron
-      dist: xenial
-      compiler: gcc
-      stage: "Build Verilator"
-      name: "16.04 gcc build+test"
-      script: ci/test.sh all
-    - if: type = cron
-      dist: bionic
-      compiler: gcc
-      stage: "Build Verilator"
-      name: "18.04 gcc build+test"
-      script: ci/test.sh all
-    - if: type = cron
-      dist: xenial
-      compiler: clang
-      stage: "Build Verilator"
-      name: "16.04 clang build+test"
-      script: ci/test.sh all
-    - if: type = cron
-      dist: focal
-      compiler: clang
-      stage: "Build Verilator"
-      name: "20.04 clang build+test"
-      script: ci/test.sh all
-
-notifications:
-  email:
-    if: repo = verilator/verilator
-    recipients:
-      - wsnyder@wsnyder.org
-      - todd.strader@gmail.com
