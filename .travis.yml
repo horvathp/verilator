@@ -12,7 +12,7 @@ version: ~> 1.0
 os: osx
 osx_image: xcode11.4
 language: cpp
-cache: ccache
+#cache: ccache
 
 env:
   global:
@@ -57,24 +57,16 @@ jobs:
     - if: type != cron
       stage: test
       name: "Dist test"
-      dist: focal
-      compiler: gcc
       script: ci/test.sh dist
     - if: type != cron
       stage: test
       name: "Vlt test"
-      dist: focal
-      compiler: gcc
       script: ci/test.sh vlt
     - if: type != cron
       stage: test
       name: "Vltmt set 0 test"
-      dist: focal
-      compiler: gcc
       script: ci/test.sh vltmt0
     - if: type != cron
       stage: test
       name: "Vltmt set 1 test"
-      dist: focal
-      compiler: gcc
       script: ci/test.sh vltmt1
