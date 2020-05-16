@@ -33,7 +33,7 @@ before_install:
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then 
       export PERL_MM_USE_DEFAULT=1;
       #cpan -fi Unix::Processors Parallel::Forker;
-      yes yes | sudo cpan -fi Unix::Processors Parallel::Forker;
+      sudo cpan -fi Unix::Processors Parallel::Forker;
       brew update;
       brew install bison flex;
       PATH=/usr/local/opt/bison/bin:/usr/local/opt/flex/bin:$PATH;
