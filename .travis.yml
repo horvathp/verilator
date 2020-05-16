@@ -30,10 +30,8 @@ before_install:
 # Perl modules needed for testing
 # Not listing Bit::Vector as slow to install, and only skips one test
   - touch temp.cpp ; g++ -E -dM -c temp.cpp | sort ; rm -rf temp.cpp
-#  - yes yes | sudo cpan -fi Unix::Processors Parallel::Forker
-#  - sudo apt-get install gdb gtkwave lcov
-#  - sudo apt-get install libfl-dev || true
-#  - sudo apt-get install libgoogle-perftools-dev
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew update            ; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install bison flex; fi
 before_script:
   - bash -x ci/build_vcddiff.sh
   - bash -x ci/build_verilator.sh
