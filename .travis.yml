@@ -31,6 +31,7 @@ before_install:
 # Not listing Bit::Vector as slow to install, and only skips one test
   - touch temp.cpp ; g++ -E -dM -c temp.cpp | sort ; rm -rf temp.cpp
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then 
+      export PERL_MM_USE_DEFAULT=1
       cpan -fi Unix::Processors Parallel::Forker
       brew update;
       brew install bison flex;
