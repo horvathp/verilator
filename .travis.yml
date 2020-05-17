@@ -32,8 +32,9 @@ before_install:
   - touch temp.cpp ; g++ -E -dM -c temp.cpp | sort ; rm -rf temp.cpp
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then 
       brew update;
+      brew cask install gtkwave;
       brew install bison flex;
-      brew install grep cmake gperftools gtkwave;
+      brew install grep cmake gperftools;
       brew install perl;     
       export PERL_MM_USE_DEFAULT=1;
       PERL_MM_OPT="INSTALL_BASE=$HOME/perl5" cpan local::lib;
