@@ -203,16 +203,20 @@ $(VM_PREFIX)__ALL.a: $(VK_OBJS)
 
 ifneq ($(VM_DEFAULT_RULES),0)
 $(VM_PREFIX)__ALLfast.o: $(VM_PREFIX)__ALLfast.cpp
+	$(MAKE) debug-make
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 
 $(VM_PREFIX)__ALLslow.o: $(VM_PREFIX)__ALLslow.cpp
+	$(MAKE) debug-make
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_SLOW) -c -o $@ $<
 
 # VM_GLOBAL_FAST files including verilated.o use this rule
 %.o: %.cpp
+	$(MAKE) debug-make
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 
 %__Slow.o: %__Slow.cpp
+	$(MAKE) debug-make
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_SLOW) -c -o $@ $<
 
 endif
